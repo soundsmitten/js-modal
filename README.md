@@ -1,31 +1,19 @@
-## Pure JavaScript modal
+## Vanilla JS modal
 
-Work n progress, will fill up later
-
-## Code Example
-
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+This is a simple modal plugin written in plain JavaScript. It uses CSS3 for transitions.
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+I needed a plugin without dependencies for my projects. I also practiced my JS skills with it. The modal is inspired by an article at scotch.io, "Building Your Own JavaScript Modal Plugin". Please visit their website for amazing hands-on tutorials.
 
-## Installation
+## Using it
 
-Provide code examples and explanations of how to get the project.
-
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-## Tests
-
-Describe and show how to run the tests with code examples.
+There are several examples of implementations at the end of the JS files. To test them, you'll need to uncomment the desired implementation.
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+This is just a simple plugin for my personal projects and to practice my JS abilities. You're more than welcome to contribute :)
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+MIT

@@ -1,15 +1,20 @@
 // Create an immediately invoked functional expression to wrap our code
 (function() {
 
-    // Define our constructor method
+    // Define our constructor
     this.Modal = function() {
+
         // Create global element references
         this.closeButton = null;
         this.modal = null;
         this.overlay = null;
 
+        // Determine proper prefix
+        this.transitionEnd = transitionSelect();
+
         // Define option defaults
         var defaults = {
+            autoOpen: false,
             className: 'fade-and-drop',
             closeButton: true,
             content: "",
@@ -18,48 +23,22 @@
             overlay: true
         }
 
-        // Create options by extending defaults with the passed arguments
+        // Create options by extending defaults with the passed in arugments
         if (arguments[0] && typeof arguments[0] === "object") {
             this.options = extendDefaults(defaults, arguments[0]);
         }
+
+        if(this.options.autoOpen === true) this.open();
+
     }
 
-    // Public methods
-    Modal.prototype.open = function() {
-        // Build our modal
-        buildOut.call(this);
-
-        // Initialize our event listeners
-
-        /*
-         * After adding elements to the DOM, use getComputedStyle
-         * to force the browser to recalc and recognize the elements
-         * that we just added. this is so that CSS animation has a start point
-        */
-        window.getComputedStyle(this.modal).height;
-
-        /*
-         * Add our open class and check if the modal is taller than the window
-         * If so, our anchored class is applied
-        */
-        this.modal.className = this.modal.className +
-            (this.modal.offsetHeight > window.innerHeight ?
-                " jezuhke-open jezuhke-anchored" : " jezuhke-open");
-        this.overlay.className = this.overlay.className + " jezuhke-open";
-    }
+    // Public Methods
 
     Modal.prototype.close = function() {
-        // store the value of this
         var _ = this;
-
-        // Remove the open class name
-        this.modal.className = this.modal.className.replace(" jezzuhke-open", "");
-        this.overlay.className = this.overlay.className.replace(" scotch-open", "");
-
-        /*
-         * Listen for CSS transitioned event and then
-         * remove the nodes from the DOM
-        */
+        this.modal.className = this.modal.className.replace(" jh-open", "");
+        this.overlay.className = this.overlay.className.replace(" jh-open",
+        "");
         this.modal.addEventListener(this.transitionEnd, function() {
             _.modal.parentNode.removeChild(_.modal);
         });
@@ -68,16 +47,28 @@
         });
     }
 
-    // Private methods
+    Modal.prototype.open = function() {
+        buildOut.call(this);
+        initializeEvents.call(this);
+        window.getComputedStyle(this.modal).height;
+        this.modal.className = this.modal.className +
+        (this.modal.offsetHeight > window.innerHeight ?
+            " jh-open jh-anchored" : " jh-open");
+            this.overlay.className = this.overlay.className + " jh-open";
+    }
+
+    // Private Methods
+
     function buildOut() {
+
         var content, contentHolder, docFrag;
 
         /*
-         * If content is on an HTML string, append the JTML string.
-         * If content is in a domNode, append its content.
-         */
+        * If content is an HTML string, append the HTML string.
+        * If content is a domNode, append its content.
+        */
 
-        if (typeof this.options.content == "string") {
+        if (typeof this.options.content === "string") {
             content = this.options.content;
         } else {
             content = this.options.content.innerHTML;
@@ -88,28 +79,28 @@
 
         // Create modal element
         this.modal = document.createElement("div");
-        this.modal.className = "jezuhke-modal" + this.options.className;
+        this.modal.className = "jh-modal " + this.options.className;
         this.modal.style.minWidth = this.options.minWidth + "px";
         this.modal.style.maxWidth = this.options.maxWidth + "px";
 
         // If closeButton option is true, add a close button
         if (this.options.closeButton === true) {
             this.closeButton = document.createElement("button");
-            this.closeButton.className = "jezuhke-close close-button";
-            this.closeButton.innerHTML = "x";
+            this.closeButton.className = "jh-close close-button";
+            this.closeButton.innerHTML = "&times;";
             this.modal.appendChild(this.closeButton);
         }
 
         // If overlay is true, add one
         if (this.options.overlay === true) {
             this.overlay = document.createElement("div");
-            this.overlay.className = "jezuhke-overlay" + this.options.classname;
-            docFrag.appendChild(contentHolder);
+            this.overlay.className = "jh-overlay " + this.options.className;
+            docFrag.appendChild(this.overlay);
         }
 
         // Create content area and append to modal
         contentHolder = document.createElement("div");
-        contentHolder.className = "jezuhke-content";
+        contentHolder.className = "jh-content";
         contentHolder.innerHTML = content;
         this.modal.appendChild(contentHolder);
 
@@ -118,9 +109,9 @@
 
         // Append DocumentFragment to body
         document.body.appendChild(docFrag);
+
     }
 
-    // Utility method to extend defaults with user options
     function extendDefaults(source, properties) {
         var property;
         for (property in properties) {
@@ -131,7 +122,6 @@
         return source;
     }
 
-    // Attach events
     function initializeEvents() {
 
         if (this.closeButton) {
@@ -144,4 +134,54 @@
 
     }
 
+    function transitionSelect() {
+        var el = document.createElement("div");
+        if (el.style.WebkitTransition) return "webkitTransitionEnd";
+        if (el.style.OTransition) return "oTransitionEnd";
+        return 'transitionend';
+    }
+
 }());
+
+// Demo modal 1 - uncomment below
+// var myContent = document.getElementById('content');
+//
+// var myModal = new Modal({
+//     content: myContent
+// });
+//
+// var triggerButton = document.getElementById('trigger');
+//
+// triggerButton.addEventListener('click', function() {
+//     myModal.open();
+// });
+
+
+// Demo modal 2 - uncomment below
+// var myContent = document.getElementById('content');
+//
+// var myModal = new Modal({
+//   content: myContent,
+//   className: 'zoom'
+// });
+//
+// var triggerButton = document.getElementById('trigger');
+//
+// triggerButton.addEventListener('click', function() {
+//   myModal.open();
+// });
+
+
+// Demo modal 3 - uncomment below
+// var myContent = document.getElementById('content');
+//
+// var myModal = new Modal({
+//   content: myContent,
+//   className: 'zoom-and-spin',
+// });
+//
+// var triggerButton = document.getElementById('trigger');
+//
+// triggerButton.addEventListener('click', function() {
+//   myModal.open();
+// });

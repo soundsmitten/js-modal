@@ -354,3 +354,8 @@ body
          -o-transition: 500ms opacity 500ms ease;
             transition: 500ms opacity 500ms ease;
 }
+
+.toolbar
+{
+  text-align: right;
+}

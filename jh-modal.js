@@ -1,3 +1,4 @@
+// Create an immediately invoked functional expression to wrap our code
 (function() {
     // constructor for the bottom bar
     this.BarButton = function() {
@@ -53,7 +54,7 @@
         this.overlay.addEventListener(this.transitionEnd, function() {
             if(_.overlay.parentNode) _.overlay.parentNode.removeChild(_.overlay);
         });
-    },
+    }
     
     Modal.prototype.open = function() {
         buildOut.call(this);
